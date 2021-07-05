@@ -8,6 +8,10 @@ object Style : StyleSheet("Style", isStatic = true) {
         }
     }
 
+    val button by css {
+
+    }
+
     fun applyStyle() {
         styled.injectGlobal(style.toString())
     }
