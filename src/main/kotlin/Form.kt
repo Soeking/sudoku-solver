@@ -5,9 +5,26 @@ import react.RProps
 import react.RState
 import styled.css
 import styled.styledButton
+import styled.styledDiv
+import styled.styledInput
 
 class Form : RComponent<RProps, RState>() {
     override fun RBuilder.render() {
+        styledDiv {
+            css {
+                +Style.board
+            }
+            for (i in 0..8) {
+                for (j in 0..8) {
+                    styledInput {
+                        css {
+                            +Style.input
+                        }
+                    }
+                }
+            }
+        }
+
         styledButton {
             css {
                 +Style.button
