@@ -6,6 +6,7 @@ fun main() {
     Style.applyStyle()
     window.onload = {
         render(document.getElementById("root")) {
+            form()
         }
     }
 }
