@@ -14,11 +14,20 @@ class Form : RComponent<RProps, RState>() {
             css {
                 +Style.board
             }
-            for (i in 0..8) {
-                for (j in 0..8) {
-                    styledInput {
+            for(n in 0..2){
+                for (m in 0..2){
+                    styledDiv {
                         css {
-                            +Style.input
+                            +Style.smallBoard
+                        }
+                        for (i in 0..2) {
+                            for (j in 0..2) {
+                                styledInput {
+                                    css {
+                                        +Style.input
+                                    }
+                                }
+                            }
                         }
                     }
                 }
