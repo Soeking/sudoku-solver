@@ -70,9 +70,7 @@ class Form : RComponent<RProps, FormState>() {
             }
             +"calc"
             attrs.onClickFunction = {
-                setState {
-                    isEdit = false
-                }
+                calc()
             }
         }
 
@@ -90,6 +88,13 @@ class Form : RComponent<RProps, FormState>() {
     private fun checkNumber(x: String): Int {
         val res = x.toIntOrNull() ?: 0
         return if (res in 1..9) res else 0
+    }
+
+    private fun calc() {
+        setState {
+            isEdit = false
+            numbers = Solver().solve(numbers)
+        }
     }
 
     private fun reset() {
