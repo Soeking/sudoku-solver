@@ -93,7 +93,9 @@ class Form : RComponent<RProps, FormState>() {
     private fun calc() {
         setState {
             isEdit = false
-            numbers = Solver().solve(numbers)
+            Solver().solve(numbers).onSuccess {
+                numbers = it
+            }.onFailure { }
         }
     }
 
