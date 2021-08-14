@@ -1,5 +1,5 @@
 class Solver {
-    fun solve(numbers: Array<Array<Int>>): Result<Array<Array<Int>>> {
+    fun solve(numbers: Array<Array<Int>>): Pair<Boolean, Array<Array<Int>>> {
         if (existEmpty(numbers)) {
             for (i in 0..9) {
                 for (j in 0..9) {
@@ -8,15 +8,15 @@ class Solver {
                             val nums = numbers.copyOf()
                             nums[i][j] = it
                             val res = solve(nums)
-                            if (res.isSuccess) return res
+                            if (res.first) return res
                         }
                     }
                 }
             }
         } else {
-            if (isCorrect(numbers)) return Result.success(numbers)
+            if (isCorrect(numbers)) return Pair(true, numbers)
         }
-        return Result.failure(Exception())
+        return Pair(false, numbers)
     }
 
     private fun existEmpty(numbers: Array<Array<Int>>): Boolean {

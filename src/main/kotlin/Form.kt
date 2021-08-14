@@ -9,6 +9,7 @@ import styled.styledDiv
 import styled.styledInput
 
 interface FormState : RState {
+    var text: String
     var numbers: Array<Array<Int>>
     var isEdit: Boolean
 }
@@ -16,6 +17,7 @@ interface FormState : RState {
 class Form : RComponent<RProps, FormState>() {
     init {
         state.run {
+            text = "please input"
             numbers = Array(9) { Array(9) { 0 } }
             isEdit = true
         }
@@ -93,9 +95,12 @@ class Form : RComponent<RProps, FormState>() {
     private fun calc() {
         setState {
             isEdit = false
-            Solver().solve(numbers).onSuccess {
-                numbers = it
-            }.onFailure { }
+            Solver().solve(numbers).let {
+                if (it.first) {
+                    numbers = it.second
+                    text = "answer is"
+                } else text = "impossible"
+            }
         }
     }
 
@@ -107,6 +112,7 @@ class Form : RComponent<RProps, FormState>() {
                     it[i] = 0
                 }
             }
+            text = "please input"
         }
     }
 }
