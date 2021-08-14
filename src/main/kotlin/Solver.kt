@@ -1,7 +1,18 @@
 class Solver {
     fun solve(numbers: Array<Array<Int>>): Result<Array<Array<Int>>> {
         if (existEmpty(numbers)) {
-
+            for (i in 0..9) {
+                for (j in 0..9) {
+                    if (numbers[i][j] == 0) {
+                        searchUnusedNumbers(numbers, i, j).forEach {
+                            val nums = numbers.copyOf()
+                            nums[i][j] = it
+                            val res = solve(nums)
+                            if (res.isSuccess) return res
+                        }
+                    }
+                }
+            }
         } else {
             if (isCorrect(numbers)) return Result.success(numbers)
         }
@@ -13,6 +24,11 @@ class Solver {
             if (it.any { i -> i == 0 }) return true
         }
         return false
+    }
+
+    private fun searchUnusedNumbers(numbers: Array<Array<Int>>, x: Int, y: Int): Set<Int> {
+        val set = (1..9).toSet()
+        return set
     }
 
     private fun isCorrect(numbers: Array<Array<Int>>): Boolean {

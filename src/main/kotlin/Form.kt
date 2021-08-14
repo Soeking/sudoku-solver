@@ -54,7 +54,7 @@ class Form : RComponent<RProps, FormState>() {
                                         css {
                                             +Style.grid
                                         }
-                                        +state.numbers[n * 3 + i][m * 3 + j].toString()
+                                        +state.numbers[n * 3 + i][m * 3 + j].let { if (it != 0) it.toString() else "" }
                                     }
                                 }
                             }
