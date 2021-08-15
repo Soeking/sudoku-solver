@@ -1,8 +1,8 @@
 class Solver {
     fun solve(numbers: Array<Array<Int>>): Pair<Boolean, Array<Array<Int>>> {
         if (existEmpty(numbers)) {
-            for (i in 0..9) {
-                for (j in 0..9) {
+            for (i in 0..8) {
+                for (j in 0..8) {
                     if (numbers[i][j] == 0) {
                         searchUnusedNumbers(numbers, i, j).forEach {
                             val nums = numbers.copyOf()

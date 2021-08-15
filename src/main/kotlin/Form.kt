@@ -24,6 +24,7 @@ class Form : RComponent<RProps, FormState>() {
     }
 
     override fun RBuilder.render() {
+        +state.text
         styledDiv {
             css {
                 +Style.board
