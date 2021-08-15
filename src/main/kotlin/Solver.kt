@@ -1,5 +1,13 @@
-class Solver {
-    fun solve(numbers: Array<Array<Int>>): Pair<Boolean, Array<Array<Int>>> {
+class Solver(numbers: Array<Array<Int>>) {
+    private val defaultNum = numbers
+
+    fun solve(): Pair<Boolean, Array<Array<Int>>> {
+        val base = defaultNum.copyOf()
+        calc(base).let { if (it.first) return it }
+        return Pair(false, defaultNum)
+    }
+
+    fun calc(numbers: Array<Array<Int>>): Pair<Boolean, Array<Array<Int>>> {
         if (existEmpty(numbers)) {
             for (i in 0..8) {
                 for (j in 0..8) {
@@ -7,7 +15,7 @@ class Solver {
                         searchUnusedNumbers(numbers, i, j).forEach {
                             val nums = numbers.copyOf()
                             nums[i][j] = it
-                            val res = solve(nums)
+                            val res = calc(nums)
                             if (res.first) return res
                         }
                     }

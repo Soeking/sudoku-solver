@@ -96,7 +96,7 @@ class Form : RComponent<RProps, FormState>() {
     private fun calc() {
         setState {
             isEdit = false
-            Solver().solve(numbers).let {
+            Solver(numbers).solve().let {
                 if (it.first) {
                     numbers = it.second
                     text = "answer is"
