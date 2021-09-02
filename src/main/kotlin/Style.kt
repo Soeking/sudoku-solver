@@ -4,7 +4,7 @@ import styled.StyleSheet
 
 object Style : StyleSheet("Style", isStatic = true) {
     private val gridSize = 40.px
-    private val smallBoardSize = 123.px
+    private val smallBoardSize = 126.px
 
     private val style = CSSBuilder().apply {
         body {
@@ -22,10 +22,10 @@ object Style : StyleSheet("Style", isStatic = true) {
     }
 
     val smallBoard by css {
-        border(2.px, BorderStyle.solid, Color.black)
+        border(1.px, BorderStyle.solid, Color.black)
         display = Display.grid
-        gridTemplateColumns = GridTemplateColumns(*Array(3) { 41.px })
-        gridTemplateRows = GridTemplateRows(*Array(3) { 41.px })
+        gridTemplateColumns = GridTemplateColumns(*Array(3) { 42.px })
+        gridTemplateRows = GridTemplateRows(*Array(3) { 42.px })
         columnGap = Gap("1px")
         rowGap = Gap("1px")
     }
