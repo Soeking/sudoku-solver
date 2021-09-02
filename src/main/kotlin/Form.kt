@@ -9,6 +9,7 @@ import styled.styledDiv
 import styled.styledInput
 
 interface FormState : RState {
+    var text: String
     var numbers: Array<Array<Int>>
     var isEdit: Boolean
 }
@@ -16,12 +17,14 @@ interface FormState : RState {
 class Form : RComponent<RProps, FormState>() {
     init {
         state.run {
+            text = "please input"
             numbers = Array(9) { Array(9) { 0 } }
             isEdit = true
         }
     }
 
     override fun RBuilder.render() {
+        +state.text
         styledDiv {
             css {
                 +Style.board
@@ -54,7 +57,7 @@ class Form : RComponent<RProps, FormState>() {
                                         css {
                                             +Style.grid
                                         }
-                                        +state.numbers[n * 3 + i][m * 3 + j].toString()
+                                        +state.numbers[n * 3 + i][m * 3 + j].let { if (it != 0) it.toString() else "" }
                                     }
                                 }
                             }
@@ -70,9 +73,7 @@ class Form : RComponent<RProps, FormState>() {
             }
             +"calc"
             attrs.onClickFunction = {
-                setState {
-                    isEdit = false
-                }
+                calc()
             }
         }
 
@@ -92,6 +93,16 @@ class Form : RComponent<RProps, FormState>() {
         return if (res in 1..9) res else 0
     }
 
+    private fun calc() {
+        setState {
+            isEdit = false
+            Solver(numbers).solve().let {
+                text = if (it) "answer is"
+                else "impossible"
+            }
+        }
+    }
+
     private fun reset() {
         setState {
             isEdit = true
@@ -100,6 +111,7 @@ class Form : RComponent<RProps, FormState>() {
                     it[i] = 0
                 }
             }
+            text = "please input"
         }
     }
 }
