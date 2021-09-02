@@ -97,10 +97,8 @@ class Form : RComponent<RProps, FormState>() {
         setState {
             isEdit = false
             Solver(numbers).solve().let {
-                if (it.first) {
-                    numbers = it.second
-                    text = "answer is"
-                } else text = "impossible"
+                text = if (it) "answer is"
+                else "impossible"
             }
         }
     }

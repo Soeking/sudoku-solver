@@ -1,45 +1,63 @@
-class Solver(numbers: Array<Array<Int>>) {
-    private val defaultNum = numbers
-
-    fun solve(): Pair<Boolean, Array<Array<Int>>> {
-        val base = defaultNum.copyOf()
-        calc(base).let { if (it.first) return it }
-        return Pair(false, defaultNum)
+class Solver(private val numbers: Array<Array<Int>>) {
+    fun solve(): Boolean {
+        return findEmpty().let {
+            if (it == null) false
+            else calc(it.first, it.second)
+        }
     }
 
-    fun calc(numbers: Array<Array<Int>>): Pair<Boolean, Array<Array<Int>>> {
-        if (existEmpty(numbers)) {
-            for (i in 0..8) {
-                for (j in 0..8) {
-                    if (numbers[i][j] == 0) {
-                        searchUnusedNumbers(numbers, i, j).forEach {
-                            val nums = numbers.copyOf()
-                            nums[i][j] = it
-                            val res = calc(nums)
-                            if (res.first) return res
-                        }
-                    }
-                }
+    private fun calc(x: Int, y: Int): Boolean {
+        numbers[x][y] = -1
+        if (existEmpty()) {
+            val (i, j) = findEmpty()!!
+            searchUnusedNumbers(x, y).forEach {
+                numbers[x][y] = it
+                if (calc(i, j)) return true
             }
         } else {
-            if (isCorrect(numbers)) return Pair(true, numbers)
+            searchUnusedNumbers(x, y).forEach {
+                numbers[x][y] = it
+                if (isCorrect()) return true
+            }
         }
-        return Pair(false, numbers)
+        numbers[x][y] = 0
+        return false
     }
 
-    private fun existEmpty(numbers: Array<Array<Int>>): Boolean {
+    private fun existEmpty(): Boolean {
         numbers.forEach {
             if (it.any { i -> i == 0 }) return true
         }
         return false
     }
 
-    private fun searchUnusedNumbers(numbers: Array<Array<Int>>, x: Int, y: Int): Set<Int> {
-        val set = (1..9).toSet()
+    private fun searchUnusedNumbers(x: Int, y: Int): Set<Int> {
+        val set = (1..9).toMutableSet()
+        for (i in 0..8) {
+            if (numbers[x][i] != 0) set.remove(numbers[x][i])
+            if (numbers[i][y] != 0) set.remove(numbers[i][y])
+
+            val p = x / 3
+            val q = y / 3
+            for (n in 0..2)
+                for (m in 0..2)
+                    if (numbers[p * 3 + n][q * 3 + m] != 0) set.remove(numbers[p * 3 + n][q * 3 + m])
+        }
         return set
     }
 
-    private fun isCorrect(numbers: Array<Array<Int>>): Boolean {
+    private fun findEmpty(): Pair<Int, Int>? {
+        for (i in 0..8) {
+            for (j in 0..8) {
+                if (numbers[i][j] == 0) {
+                    return Pair(i, j)
+                }
+            }
+        }
+        return null
+    }
+
+    private fun isCorrect(): Boolean {
         for (i in 0 until 9) {
             if (isCorrectBlock(
                     numbers[i][0],
@@ -65,6 +83,7 @@ class Solver(numbers: Array<Array<Int>>) {
                     numbers[8][i]
                 ).not()
             ) return false
+
             val x = (i / 3) * 3
             val y = (i % 3) * 3
             if (isCorrectBlock(
